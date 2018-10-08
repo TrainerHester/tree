@@ -1,7 +1,12 @@
 package com.it1315.tree.controller;
 
+import com.it1315.tree.entity.Tree;
+import com.it1315.tree.service.TreeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * Created by dly on 2018/10/8
@@ -9,9 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
+    @Autowired
+    private TreeService treeService;
+
     @RequestMapping("/tree")
-    public String hello() {
-        return "hello tree!";
+    public List<Tree> hello() {
+        return treeService.findTreeById(1);
     }
 
 }
