@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.it1315.tree.mapper.TreeMapper">
+    <resultMap id="BaseResultMap" type="com.it1315.tree.entity.Tree">
+        <id column="id" property="id"/>
+        <result column="lon" property="lon"/>
+        <result column="lat" property="lat"/>
+        <result column="tree_type" property="treeType"/>
+        <result column="hight" property="hight"/>
+        <result column="crown" property="crown"/>
+        <result column="age" property="age"/>
+        <result column="photo_path" property="photoPath"/>
+    </resultMap>
+    <sql id="ColumnList">
+        id, lon, lat, tree_type, hight, crown, age, photo_path
+    </sql>
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="ColumnList"/>
+        from t_tree
+        where id=#{id}
+    </select>
+</mapper>
