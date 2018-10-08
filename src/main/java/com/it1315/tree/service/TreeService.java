@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface TreeService {
 
+    //A service: find tree by id
     List<Tree> findTreeById(Integer id);
 
 }
