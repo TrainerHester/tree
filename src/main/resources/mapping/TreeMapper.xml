@@ -26,12 +26,23 @@
         <include refid="ColumnList" />
         from t_tree
         where 1=1
-        <if test="treeType != null"><![CDATA[and tree_type=#{treeType}]]></if>
+        <if test="treeTypes != null">
+            <!--<![CDATA[and tree_type=#{treeType}]]>-->
+            and tree_type in
+            <foreach collection="treeTypes" item="treeType" separator=","
+                     open="(" close=")">
+                #{treeType}
+            </foreach>
+
+        </if>
         <if test="minHight != null"><![CDATA[and hight >= #{minHight}]]></if>
         <if test="maxHight != null"><![CDATA[and hight <= #{maxHight}]]></if>
+
         <if test="minCrown != null"><![CDATA[and crown >= #{minCrown}]]></if>
         <if test="maxCrown != null"><![CDATA[and crown <= #{maxCrown}]]></if>
-        <if test="age != null"><![CDATA[and age >= #{minAge}]]></if>
+        <if test="minAge != null"><![CDATA[and age >= #{minAge}]]></if>
+        <if test="maxAge != null"><![CDATA[and age <= #{maxAge}]]></if>
+
     </select>
 
 </mapper>

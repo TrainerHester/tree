@@ -574,7 +574,7 @@ var display_func = function(data) {
     });
 };
 
-$.get('http://localhost:8080/trees', display_func);
+$.get('http://localhost:8080/trees/search?treeType=乔木&treeType=灌木', display_func);
 
 var gen_subItem = function(item_dict) {
 	var res  = '';
@@ -625,7 +625,6 @@ var gen_subItem = function(item_dict) {
 
 
 }
-
 var full_search = function() {
 	var code = $('#search-code').val();
 	var age = $('#search-age').val();
