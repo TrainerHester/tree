@@ -4,20 +4,17 @@
     <meta charset="utf-8">
     <title>ECharts-01</title>
 
-
-
-
-    <link type="text/css" rel="styleSheet" href="bootstrap-3.3.6-dist\css/bootstrap.min.css" />
+    <link type="text/css" rel="styleSheet" href="/plugins/bootstrap-3.3.6-dist\css/bootstrap.min.css" />
     <!-- 引入 echarts.js -->
-    <script src="echarts.min.js"></script>
+    <script src="/plugins/echarts.min.js"></script>
     <!-- <script type="china.js"></script> -->
 
 	<!--引入百度地图的jssdk，这里需要使用你在百度地图开发者平台申请的 ak-->
 	<script src="http://api.map.baidu.com/api?v=2.0&ak=gnAAGOqfnrLAWRx0nMADrACfK7LajgvS"></script>
 	<!-- 引入百度地图扩展 -->
-	<script src="bmap.min.js"></script>
-	<script type="text/javascript" src="jquery-2.1.1.min.js"></script>
-	<script type="text/javascript" src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+	<script src="/plugins//bmap.min.js"></script>
+	<script type="text/javascript" src="/plugins/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="/plugins/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
 
 	<style type="text/css">
 		.input-group, .input-group-lg{
@@ -136,7 +133,7 @@ var display_func = function(data) {
 	                age: item.age,
 	                height: item.hight,
 	                canopy: item.crown,
-	                img: item.photoPath
+	                img: '/imgs/tree.jpg'
 	            });
 	        }
 	    }
@@ -560,7 +557,7 @@ var display_func = function(data) {
             type: 'scatter',
             coordinateSystem: 'bmap',
             // polyline: true,
-            symbolSize: 20,
+            symbolSize: 5,
             // data: [[114.224607,30.630184], [114.224727,30.630184]],
             // data: [{name:'武汉', value: [114.224727,30.630184], img:"./tree.jpg"} ],
             data: convertData(data),
@@ -596,9 +593,9 @@ var gen_subItem = function(item_dict) {
 		for(var item in filter_dict) {
 			if(filter_dict[item].startsWith('>')) {
 				res += '/' + item + '_greater?' + item + '_head=' + item_dict[item].substr(1);
-			}else if(item_dict[item].startsWith('<')) {
+			}else if(item_dict[item].trim().startsWith('<')) {
 				res += '/' + item + '_less?' + item + '_tail=' + item_dict[item].substr(1);
-			}else if(item_dict[item].indexOf('-') == 1) {
+			}else if(item_dict[item].trim().indexOf('-') === 1) {
 				res += '/' + item + '_range?' + item + '_head=' + item_dict[item].split("-")[0] + '&&' + item + '_tail=' + item_dict[item].split("-")[1];
 			}
 			return res;	
