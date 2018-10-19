@@ -17,7 +17,7 @@ public class HelloController {
     @Autowired
     private TreeService treeService;
 
-    @RequestMapping("/tree")
+    @RequestMapping("/trees")
     public List<Tree> hello() {
         return treeService.findTreeById(1);
     }

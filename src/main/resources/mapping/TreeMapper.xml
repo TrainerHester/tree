@@ -20,4 +20,18 @@
         from t_tree
         where id=#{id}
     </select>
+
+    <select id="findWithCondition" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="ColumnList" />
+        from t_tree
+        where 1=1
+        <if test="treeType != null"><![CDATA[and tree_type=#{treeType}]]></if>
+        <if test="minHight != null"><![CDATA[and hight >= #{minHight}]]></if>
+        <if test="maxHight != null"><![CDATA[and hight <= #{maxHight}]]></if>
+        <if test="minCrown != null"><![CDATA[and crown >= #{minCrown}]]></if>
+        <if test="maxCrown != null"><![CDATA[and crown <= #{maxCrown}]]></if>
+        <if test="age != null"><![CDATA[and age >= #{minAge}]]></if>
+    </select>
+
 </mapper>

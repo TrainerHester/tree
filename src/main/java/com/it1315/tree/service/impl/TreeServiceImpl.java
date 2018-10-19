@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dly on 2018/10/8
@@ -20,5 +21,10 @@ public class TreeServiceImpl implements TreeService {
     @Override
     public List<Tree> findTreeById(Integer id) {
         return treeMapper.findById(id);
+    }
+
+    @Override
+    public List<Tree> findTreeWithCondition(Map<String, Object> map) {
+        return treeMapper.findWithCondition(map);
     }
 }
