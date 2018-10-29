@@ -36,5 +36,4 @@ public class TreeApplicationTests {
             System.out.println(tree);
         }
     }
-
 }
