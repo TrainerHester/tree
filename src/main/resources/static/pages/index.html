@@ -10,17 +10,27 @@
     <!-- <script type="china.js"></script> -->
 
 	<!--引入百度地图的jssdk，这里需要使用你在百度地图开发者平台申请的 ak-->
-	<script src="http://api.map.baidu.com/api?v=2.0&ak=gnAAGOqfnrLAWRx0nMADrACfK7LajgvS"></script>
+	<script src="http://api.map.baidu.com/api?v=2.0&ak=CLxSXeNx0ivn1DXHaaGmnst0yQYh2Ljp"></script>
 	<!-- 引入百度地图扩展 -->
-	<script src="/plugins//bmap.min.js"></script>
-	<script type="text/javascript" src="/plugins/jquery-2.1.1.min.js"></script>
+	<script src="/plugins/bmap.min.js"></script>
+    <!--<script src="/plugins/config.js"></script>-->
+    <script src="/plugins/require.js" defer async="true"></script>
+    <script type="text/javascript" src="/plugins/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="/plugins/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
 
 	<style type="text/css">
 		.input-group, .input-group-lg{
 			margin: 10px;
 		}
+		html, body {
+			height: 100%;
+			width:100%
+		}
 
+		#main {
+			width: 100%;
+			height: 100%;
+		}
 
 	</style>
 
@@ -67,14 +77,14 @@
 	        <button type="submit" class="btn btn-default">搜索</button>
 	      </form>
 	      <ul class="nav navbar-nav navbar-right">
-	        <li><button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">复合搜索</button></li>
+	        <li><button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#complex_search_Modal">复合搜索</button></li>
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
-    <div id="main" style="width: 1000px;height:1000px; margin: auto;"></div>
+    <div id="main" style="position: relative;"></div>
 	
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal fade" id="complex_search_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -110,10 +120,76 @@
     </div>
   </div>
 </div>
+    <button id="btn" data-toggle="modal" data-target="#myModal" hidden>
+        Launch demo modal
+    </button>
+	<button id="a_lg"></button>
 
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="/plugins/require.js" data-main="/plugins/config"></script>
     <script type="text/javascript">
         // app.title = 'tree - 百度地图';
 var myChart = echarts.init(document.getElementById('main'));
+$(document).click(function (e) {
+    console.log("e.target is");
+	console.log(JSON.stringify(e))
+});
+click_func = function (param) {
+    console.log(param);
+//    $("#btn").click();
+    var creatediv= function(){
+        $(".hint_link").remove();
+        var parentdiv=$('<div>eeeeeeef</div>');        //创建一个父div
+        parentdiv.attr('class','hint_link');        //给父div设置id
+        parentdiv.css({"height":"100px", "width" : "200px", "position":"absolute", "left": param.event.event.pageX, "top": param.event.event.pageY, "border":"3px solid #000"});    //添加css样式
+        parentdiv.appendTo($("body"));
+    };
+     creatediv();
+
+//    $(param).click();
+};
+
+windowAddMouseWheel();
+function windowAddMouseWheel() {
+	var scrollFunc = function (e) {
+		e = e || window.event;
+		if (e.wheelDelta) {  //判断浏览器IE，谷歌滑轮事件
+			$(".hint_link").remove();
+		}
+	};
+	//给页面绑定滑轮滚动事件
+	if (document.addEventListener) {
+		document.addEventListener('DOMMouseScroll', scrollFunc, false);
+	}
+//滚动滑轮触发scrollFunc方法
+	window.onmousewheel = document.onmousewheel = scrollFunc;
+}
+
+require(["/plugins/config.js"], function (param) {
+    myChart.on(param.EVENT.CLICK, click_func)
+});
+
+$(document).ondblclick = function (e) {
+    $(".hint_link").remove();
+};
 
 var display_func = function(data) {
 	//console.log(data._embedded.treeUnits);
@@ -123,18 +199,16 @@ var display_func = function(data) {
     	for (var i = 0; i < data.length; i++) {
 	        var item = data[i];
 	        if (item) {
-	            res.push({
-	            	// data: [{name:'武汉', value: [114.224727,30.630184], img:"./tree.jpg"} ],
-	                code: item.id,
-	                value: [item.lon, item.lat],
-	             	longitude: item.lon,
-	             	latitude: item.lat,
-	                type: item.treeType,
-	                age: item.age,
-	                height: item.hight,
-	                canopy: item.crown,
-	                img: '/imgs/tree.jpg'
-	            });
+                var item_dic = {
+                    code: item.id,
+					value: [item.lon, item.lat]
+                };
+                for(var key in item) {
+                    if (item.hasOwnProperty(key)) {
+                        item_dic[key] = item[key];
+                    }
+				}
+	            res.push(item_dic);
 	        }
 	    }
 	    return res;
@@ -555,6 +629,7 @@ var display_func = function(data) {
         series: [{
         	name: 'tree',
             type: 'scatter',
+            clickable : true,
             coordinateSystem: 'bmap',
             // polyline: true,
             symbolSize: 5,
@@ -574,8 +649,9 @@ var display_func = function(data) {
     });
 };
 
-$.get('http://localhost:8080/trees/search?treeType=乔木&treeType=灌木', display_func);
-
+//$.get('http://localhost:8080/trees/search?treeType=乔木&treeType=灌木', display_func);
+//$.get('http://localhost:8080/trees/search?treeType=楠木', display_func);
+display_func([{name:'武汉', value: [114.224727,30.630184], img:"./tree.jpg"} ]);
 var gen_subItem = function(item_dict) {
 	var res  = '';
 	var filter_dict = {}
@@ -617,14 +693,10 @@ var gen_subItem = function(item_dict) {
 			}
 			
 		}
-
-		if (true) {}
-
-
 	}
 
 
-}
+};
 var full_search = function() {
 	var code = $('#search-code').val();
 	var age = $('#search-age').val();
@@ -638,9 +710,7 @@ var full_search = function() {
 	console.log(search_subItem);
 	// $.get('http://localhost:8080/trees' + search_subItem, display_func);
 
-}
-
-
+};
 
     </script>
 </body>

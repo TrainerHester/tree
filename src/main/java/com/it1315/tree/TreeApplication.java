@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.it1315.tree.mapper")
+@MapperScan("com.vision.tree.mapper")
 public class TreeApplication {
 
     public static void main(String[] args) {

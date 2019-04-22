@@ -14,7 +14,7 @@
     <sql id="ColumnList">
         id, lon, lat, tree_type, hight, crown, age, photo_path
     </sql>
-    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="findById" resultMap="BaseResultMap">
         select
         <include refid="ColumnList"/>
         from t_tree
@@ -25,24 +25,24 @@
         select
         <include refid="ColumnList" />
         from t_tree
-        where 1=1
-        <if test="treeTypes != null">
-            <!--<![CDATA[and tree_type=#{treeType}]]>-->
-            and tree_type in
-            <foreach collection="treeTypes" item="treeType" separator=","
-                     open="(" close=")">
-                #{treeType}
-            </foreach>
+        <where>
+            <if test="treeTypes != null">
+                <!--<![CDATA[and tree_type=#{treeType}]]>-->
+                tree_type in
+                <foreach collection="treeTypes" item="treeType" separator=","
+                         open="(" close=")">
+                    #{treeType}
+                </foreach>
 
-        </if>
-        <if test="minHight != null"><![CDATA[and hight >= #{minHight}]]></if>
-        <if test="maxHight != null"><![CDATA[and hight <= #{maxHight}]]></if>
+            </if>
+            <if test="minHight != null"><![CDATA[and hight >= #{minHight}]]></if>
+            <if test="maxHight != null"><![CDATA[and hight <= #{maxHight}]]></if>
 
-        <if test="minCrown != null"><![CDATA[and crown >= #{minCrown}]]></if>
-        <if test="maxCrown != null"><![CDATA[and crown <= #{maxCrown}]]></if>
-        <if test="minAge != null"><![CDATA[and age >= #{minAge}]]></if>
-        <if test="maxAge != null"><![CDATA[and age <= #{maxAge}]]></if>
-
+            <if test="minCrown != null"><![CDATA[and crown >= #{minCrown}]]></if>
+            <if test="maxCrown != null"><![CDATA[and crown <= #{maxCrown}]]></if>
+            <if test="minAge != null"><![CDATA[and age >= #{minAge}]]></if>
+            <if test="maxAge != null"><![CDATA[and age <= #{maxAge}]]></if>
+        </where>
     </select>
 
 </mapper>

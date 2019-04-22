@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>history-display</title>
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="/plugins/bootstrap-3.3.6-dist/js/bootstrap.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/static/plugins/jquery/jquery-2.1.1.min.js"></script>
+
+</head>
+<body>
+	
+	<ul class="nav nav-tabs">
+  <li role="presentation" ><a href="#">园林树木</a></li>
+  <li role="presentation"><a href="#">病虫害情况</a></li>
+  <li role="presentation" ><a href="#">基本配置</a></li>
+  <li role="presentation" class="active"><a href="#">自定义配置</a></li>
+</ul>
+
+
+<div class="center-block">
+<div class="panel panel-success col-md-8">
+	<span>基本信息配置</span>
+<div class="panel-body">
+<div class="table-responsive">
+  <table class="table" id="allInfo-table">
+    <!--<tr >-->
+    	<!--<td class="success" id="td-1">TreeCode(树木编号)</td>-->
+    	<!--<td title="该树木高度" id="td-2">THeight（树木高度）</td>-->
+    	<!--<td class="success" id="td-3">TType（树木种类）</td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+    	<!--<td title="该字段表征该树所处的纬度" id="td-4">TLat（所处纬度）</td>-->
+    	<!--<td class="success" id="td-5">TAge(树木年龄）</td>-->
+    	<!--<td id="td-6">TLon(所处经度)</td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+    	<!--<td>TCL（冠幅）</td>-->
+    <!--</tr>-->
+  </table>
+</div>
+<div class="panel panel-warning">
+	<div class="panel-heading">
+        <span class="panel-title">基本信息筛选</span><span> <label>
+    <input type="radio" name="blankRadio" id="blankRadio1" value="option1" aria-label="...">
+  </label></span>
+  </div> 
+  <div class="panel-body">
+	
+	<div class="panel-body">
+		
+		<table class="table" id="basicInfoFiltrate">
+    <tr >
+    	<td class="success" id="td-1">TreeCode(树木编号)</td>
+    	<td class="success" id="td-5">TAge(树木年龄）</td>
+    	<td title="该树木高度" id="td-2">THeight（树木高度）</td>
+    </tr>
+    <tr>
+    	<td class="success" id="td-3">TType（树木种类）</td>	
+    </tr>
+    
+  </table>
+
+	</div>
+</div>
+<div class="panel panel-info">
+	<div class="panel-heading">
+        <span class="panel-title">详细信息配置</span><span> <label>
+    <input type="radio" name="blankRadio" id="blankRadio1" value="option1" aria-label="...">
+  </label></span>
+  </div> 
+	<div class="panel-body">
+		
+		<table class="table" id="detailedInfoFiltrate">
+    <tr >
+    	<td class="success" id="td-1">TreeCode(树木编号)</td>
+    	<td id="td-6">TLon(所处经度)</td>
+    	<td title="该字段表征该树所处的纬度" id="td-4">TLat（所处纬度）</td>
+    	<td class="success" id="td-3">TType（树木种类）</td>
+    </tr>
+    <tr>
+    	<td title="该树木高度" id="td-2">THeight（树木高度）</td>	
+    	<td>TCL（冠幅）</td>
+		<td class="success" id="td-5">TAge(树木年龄）</td>
+    </tr>
+    
+  </table>
+
+	</div>
+</div>
+
+<div>
+	<button class="btn btn-warning" data-toggle="modal" data-target="#myModal" id="pre-view">预览</button>&emsp;&emsp;
+	
+	<button class="btn btn-info">生效</button>&emsp;&emsp;
+<br>
+</div>
+</div>
+<!-- <div class="panel panel-primary">
+	<span>详细信息配置</span>
+</div>
+ -->
+	
+
+
+</div>
+</div>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">显示预览</h4>
+      </div>
+      <div class="modal-body" id="pre-displayer">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+	
+	$(document).ready(function() {
+
+	    var displayTable = function(data) {
+            data = data.trim();
+            var split = data.split(",");
+            console.log(split);
+            for(var i=0;i<=split.length/3;i++) {
+                var tr_ = $("<tr></tr>");
+                for(var j=i * 3;j<i+3&&j<split.length;j++){
+                    tr_.appendChild(split[j]);
+                }
+                $("#allInfo-table").appendChild(tr_);
+            }
+        };
+
+	    $.get("http://localhost:8080/treeFields/info/all", function (data) {
+            displayTable(data);
+
+        });
+
+
+	});
+
+</script>
+</body>
+</html>
